@@ -11,7 +11,19 @@ import SwiftUI
 struct GIPHYSearchAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            
+//            ContentView()
+            TabView {
+                TrendingView()
+                    .tabItem {
+                        Label("Trending", systemImage: "house")
+                    }
+                SearchView()
+                    .tabItem {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+            }
         }
     }
 }
+

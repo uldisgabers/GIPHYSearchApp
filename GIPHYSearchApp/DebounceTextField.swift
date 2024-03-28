@@ -6,13 +6,37 @@
 //
 
 import SwiftUI
+import Combine
 
 struct DebounceTextField: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+  
+  @State var publisher = PassthroughSubject<String, Never>()
+  
+  @State var label: String
+  @Binding var value: String
+  var valueChanged: ((_ value: String) -> Void)?
+  
+  @State var debounceSeconds = 1.110
+  
+  var body: some View {
+    TextField(label, text: $value,  axis: .vertical)
+      .disableAutocorrection(true)
+      .onChange(of: value) { value in
+        publisher.send(value)
+      }
+      .onReceive(
+        publisher.debounce(
+          for: .seconds(debounceSeconds),
+          scheduler: DispatchQueue.main
+        )
+      ) { value in
+        if let valueChanged = valueChanged {
+          valueChanged(value)
+        }
+      }
+  }
 }
 
-#Preview {
-    DebounceTextField()
-}
+//#Preview {
+//    DebounceTextField()
+//}

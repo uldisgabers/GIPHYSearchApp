@@ -1,105 +1,153 @@
+////
+////  ContentView.swift
+////  GIPHYSearchApp
+////
+////  Created by Uldis on 24/03/2024.
+////
 //
-//  ContentView.swift
-//  GIPHYSearchApp
+//import SwiftUI
+//import WebKit
 //
-//  Created by Uldis on 24/03/2024.
+//struct ContentView: View {
+//    @State private var gifs: [Gif] = []
+//    @State private var offset = 0
+//    
+//    //    var body: some View {
+//    //        List(gifs, id: \.id) { gif in
+//    //            GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
+//    //                .frame(width: CGFloat(Int(gif.images.fixed_width.width)!), height: CGFloat(Int(gif.images.fixed_width.height)!))
+//    //        }
+//    //        .onAppear {
+//    //            fetchData()
+//    //        }
+//    //    }
+//    
+//    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+//    
+//    var body: some View {
+//        ScrollView {
+//            LazyVGrid(columns: columns) {
+//                ForEach(gifs.indices, id: \.self) { index in
+//                    let gif = gifs[index]
+//                    GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
+//                        .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 10), height: CGFloat(Int(gif.images.fixed_width.height)!) - 10)
+//                        .onAppear {
+//                            if index == gifs.count - 1 {
+//                                offset += 25
+//                                fetchData()
+//                            }
+//                        }
+//                }
+//            }
+//            .padding(.horizontal, 5.0)
+//        }
+//        .onAppear() {
+//            fetchData()
+//        }
+//    }
+//    
+//    
+//    private func fetchData() {
+//        let apiKey = "xB9uaMEw3N66ZVGf6UNZlziT2ei7LH1c"
+//        let urlString = "https://api.giphy.com/v1/gifs/trending"
+//        
+//        guard var urlComponents = URLComponents(string: urlString) else {
+//            print("Invalid URL")
+//            return
+//        }
+//        
+//        let apiKeyQueryItem = URLQueryItem(name: "api_key", value: apiKey)
+//        let limitQueryItem = URLQueryItem(name: "limit", value: "25") // how much itemes to load on a single fetch (i.e. = 25)
+//        let offsetQueryItem = URLQueryItem(name: "offset", value: "\(offset)")
+//        
+//        urlComponents.queryItems = [apiKeyQueryItem, limitQueryItem, offsetQueryItem]
+//        
+//        guard let url = urlComponents.url else {
+//            print("Invalid URL components")
+//            return
+//        }
+//        
+//        URLSession.shared.dataTask(with: url) { data, response, error in
+//            if let error = error {
+//                print("Error: \(error)")
+//                return
+//            }
+//            
+//            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+//                print("Invalid response")
+//                return
+//            }
+//            
+//            if let data = data {
+//                do {
+//                    let response = try JSONDecoder().decode(GiphyResponse.self, from: data)
+//                    DispatchQueue.main.async {
+//                        self.gifs.append(contentsOf: response.data)
+//                    }
+//                } catch {
+//                    print("Error decoding JSON: \(error)")
+//                }
+//            }
+//        }.resume()
+//    }
+//}
 //
+//struct Gif: Identifiable, Decodable {
+//    let id: String
+//    var title: String
+//    let slug: String
+//    var images: Images
+//    
+//    struct Images: Decodable {
+//        var fixed_width: FixedWidth
+//        
+//        struct FixedWidth: Decodable {
+//            var url: String
+//            var width: String
+//            let height: String
+//        }
+//        
+//        enum CodingKeys: String, CodingKey {
+//            case fixed_width
+//        }
+//    }
+//    
+//    enum CodingKeys: String, CodingKey {
+//        case id, title, slug, images
+//    }
+//}
+//
+//
+//struct GiphyResponse: Decodable {
+//    let data: [Gif]
+//}
+//
+//
+//
+//#Preview {
+//    ContentView()
+//}
+
 
 import SwiftUI
 import WebKit
 
 struct ContentView: View {
-    @State private var gifs: [Gif] = []
     
     var body: some View {
-        NavigationView {
-            List(gifs, id: \.id) { gif in
-                VStack(alignment: .leading) {
-                    Text(gif.title)
-                        .font(.headline)
-                    // Display GIF using WebView
-                    if let embedURL = URL(string: gif.embed_url) {
-                        WebView(url: embedURL)
-                            .frame(height: 200)
-                    }
+        
+        TabView {
+            TrendingView()
+                .tabItem {
+                    Label("Trending", systemImage: "house")
                 }
-            }
-            .onAppear {
-                fetchData()
-            }
+            SearchView()
+                .tabItem {
+                    Label("Search", systemImage: "magnifyingglass")
+                }
         }
     }
-    
-    private func fetchData() {
-        let apiKey = "xB9uaMEw3N66ZVGf6UNZlziT2ei7LH1c"
-        let urlString = "https://api.giphy.com/v1/gifs/trending?api_key=\(apiKey)"
-        
-        guard let url = URL(string: urlString) else {
-            print("Invalid URL")
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error: \(error)")
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                print("Invalid response")
-                return
-            }
-            
-            if let data = data {
-                do {
-                    let response = try JSONDecoder().decode(GiphyResponse.self, from: data)
-                    DispatchQueue.main.async {
-                        self.gifs = response.data
-                    }
-                } catch {
-                    print("Error decoding JSON: \(error)")
-                }
-            }
-        }.resume()
-    }
 }
-
-struct Gif: Identifiable, Decodable {
-    let id: String
-    var title: String
-    let embed_url: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id, title, embed_url
-    }
-}
-
-struct GiphyResponse: Decodable {
-    let data: [Gif]
-}
-
-struct WebView: UIViewRepresentable {
-    let url: URL?
-    
-    func makeUIView(context: Context) -> WKWebView {
-        let webView = WKWebView()
-        return webView
-    }
-    
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        guard let url = url else { return }
-        let request = URLRequest(url: url)
-        uiView.load(request)
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
-
-
 
 #Preview {
     ContentView()
