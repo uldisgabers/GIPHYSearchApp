@@ -34,7 +34,7 @@ struct GIFView: UIViewRepresentable {
     let imageView = FLAnimatedImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
 //    imageView.layer.cornerRadius = 24
-//    imageView.layer.masksToBounds = true
+    imageView.layer.masksToBounds = true
     return imageView
   }()
 
