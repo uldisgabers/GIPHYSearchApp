@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct SearchView: View {
     
     @State private var gifs: [Gif] = []
@@ -15,8 +16,8 @@ struct SearchView: View {
     @State private var hasTimeElapsed = false
     @State var value = ""
     @State private var refreshView = false
-    
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @State private var orientation = UIDeviceOrientation.portrait
+    @State private var isErrorOccurred = false
     
     var body: some View {
         NavigationView {
@@ -36,28 +37,65 @@ struct SearchView: View {
                 .padding()
                 
                 ScrollView {
-                    LazyVGrid(columns: columns) {
-                        ForEach(gifs.indices, id: \.self) { index in
-                            let gif = gifs[index]
-                            
-                            NavigationLink {
-                                DetailedGifView(gif: gif)
-                                
-                            } label: {
-                                GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
-                                    .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 10), height: CGFloat(Int(gif.images.fixed_width.height)!) - 10)
-                                    .id(index) // Add id parameter with unique index
-                                    .onAppear {
-                                        if index == gifs.count - 1 {
-                                            offset += 25
-                                            fetchData()
-                                        }
+                    Group {
+                        if orientation.isPortrait {
+                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+                                ForEach(gifs.indices, id: \.self) { index in
+                                    let gif = gifs[index]
+                                    
+                                    NavigationLink {
+                                        DetailedGifView(gif: gif)
+                                        
+                                    } label: {
+                                        GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
+                                            .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 10), height: CGFloat(Int(gif.images.fixed_width.height)!) - 10)
+                                            .id(index) // Add id parameter with unique index
+                                            .onAppear {
+                                                if index == gifs.count - 1 {
+                                                    offset += 25
+                                                    fetchData()
+                                                }
+                                            }
                                     }
+                                }
                             }
+                            .padding(.horizontal, 5.0)
+                            .id(refreshView)
+                        } else if orientation.isLandscape {
+                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
+                                ForEach(gifs.indices, id: \.self) { index in
+                                    let gif = gifs[index]
+                                    
+                                    NavigationLink {
+                                        DetailedGifView(gif: gif)
+                                        
+                                    } label: {
+                                        GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
+                                            .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 20), height: CGFloat(Int(gif.images.fixed_width.height)!) - 20)
+                                            .id(index) // Add id parameter with unique index
+                                            .onAppear {
+                                                if index == gifs.count - 1 {
+                                                    offset += 25
+                                                    fetchData()
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 5.0)
+                            .id(refreshView)
                         }
                     }
-                    .padding(.horizontal, 5.0)
-                    .id(refreshView)
+                    .onRotate { newOrientation in
+                        orientation = newOrientation
+                    }
+                }
+                .alert(isPresented: $isErrorOccurred) {
+                    Alert(
+                        title: Text("Error"),
+                        message: Text("Failed to fetch data."),
+                        dismissButton: .default(Text("OK"))
+                    )
                 }
             }
         }
@@ -95,10 +133,12 @@ struct SearchView: View {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error: \(error)")
+                isErrorOccurred = true
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                isErrorOccurred = true
                 print("Invalid response")
                 return
             }

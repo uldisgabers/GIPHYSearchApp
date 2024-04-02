@@ -23,6 +23,7 @@
 		5C7A8E5C2BB054B300F5412D /* GIPHYSearchAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7A8E5B2BB054B300F5412D /* GIPHYSearchAppTests.swift */; };
 		5C7A8E662BB054B300F5412D /* GIPHYSearchAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7A8E652BB054B300F5412D /* GIPHYSearchAppUITests.swift */; };
 		5C7A8E682BB054B300F5412D /* GIPHYSearchAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7A8E672BB054B300F5412D /* GIPHYSearchAppUITestsLaunchTests.swift */; };
+		5CF20B0A2BBC579D00A6275C /* GifStructType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF20B092BBC579D00A6275C /* GifStructType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		5C7A8E612BB054B300F5412D /* GIPHYSearchAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GIPHYSearchAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C7A8E652BB054B300F5412D /* GIPHYSearchAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIPHYSearchAppUITests.swift; sourceTree = "<group>"; };
 		5C7A8E672BB054B300F5412D /* GIPHYSearchAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIPHYSearchAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5CF20B092BBC579D00A6275C /* GifStructType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifStructType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 		5C7A8E3E2BB054B100F5412D = {
 			isa = PBXGroup;
 			children = (
+				5C75CD5D2BBBF6E4009CB9EF /* .gitignore */,
 				5C7A8E492BB054B100F5412D /* GIPHYSearchApp */,
 				5C7A8E5A2BB054B300F5412D /* GIPHYSearchAppTests */,
 				5C7A8E642BB054B300F5412D /* GIPHYSearchAppUITests */,
@@ -128,7 +131,7 @@
 				5C75CD4F2BB59382009CB9EF /* TrendingView.swift */,
 				5C75CD532BB840D4009CB9EF /* DetailedGifView.swift */,
 				5C75CD5B2BBBF5CF009CB9EF /* Secrets.swift */,
-				5C75CD5D2BBBF6E4009CB9EF /* .gitignore */,
+				5CF20B092BBC579D00A6275C /* GifStructType.swift */,
 				5C7A8E4E2BB054B300F5412D /* Assets.xcassets */,
 				5C7A8E502BB054B300F5412D /* Preview Content */,
 			);
@@ -299,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C75CD522BB60E2E009CB9EF /* DebounceTextField.swift in Sources */,
+				5CF20B0A2BBC579D00A6275C /* GifStructType.swift in Sources */,
 				5C75CD5C2BBBF5CF009CB9EF /* Secrets.swift in Sources */,
 				5C7A8E4D2BB054B100F5412D /* ContentView.swift in Sources */,
 				5C75CD4E2BB37F27009CB9EF /* GIFView.swift in Sources */,

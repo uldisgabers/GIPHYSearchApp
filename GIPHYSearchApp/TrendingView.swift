@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WebKit
 
 struct DeviceRotationViewModifier: ViewModifier {
     let action: (UIDeviceOrientation) -> Void
@@ -31,7 +30,7 @@ struct TrendingView: View {
     @State var gifs: [Gif] = []
     @State var offset = 0
     @State private var orientation = UIDeviceOrientation.portrait
-    @State private var columns: [GridItem] = []
+    @State private var isErrorOccurred = false
     
     var body: some View {
         NavigationView {
@@ -83,6 +82,14 @@ struct TrendingView: View {
                 .onRotate { newOrientation in
                     orientation = newOrientation
                 }
+                
+            }
+            .alert(isPresented: $isErrorOccurred) {
+                Alert(
+                    title: Text("Error"),
+                    message: Text("Failed to fetch data."),
+                    dismissButton: .default(Text("OK"))
+                )
             }
             .onAppear() {
                 fetchData()
@@ -114,11 +121,13 @@ struct TrendingView: View {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error: \(error)")
+                isErrorOccurred = true
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 print("Invalid response")
+                isErrorOccurred = true
                 return
             }
             
@@ -134,36 +143,6 @@ struct TrendingView: View {
             }
         }.resume()
     }
-}
-
-struct Gif: Identifiable, Decodable {
-    let id: String
-    var title: String
-    let slug: String
-    var images: Images
-    
-    struct Images: Decodable {
-        var fixed_width: FixedWidth
-        
-        struct FixedWidth: Decodable {
-            var url: String
-            var width: String
-            let height: String
-        }
-        
-        enum CodingKeys: String, CodingKey {
-            case fixed_width
-        }
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case id, title, slug, images
-    }
-}
-
-
-struct GiphyResponse: Decodable {
-    let data: [Gif]
 }
 
 
