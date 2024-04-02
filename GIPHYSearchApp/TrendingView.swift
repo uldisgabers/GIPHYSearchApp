@@ -8,47 +8,91 @@
 import SwiftUI
 import WebKit
 
+struct DeviceRotationViewModifier: ViewModifier {
+    let action: (UIDeviceOrientation) -> Void
+    
+    func body(content: Content) -> some View {
+        content
+            .onAppear()
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                action(UIDevice.current.orientation)
+            }
+    }
+}
+
+// A View wrapper to make the modifier easier to use
+extension View {
+    func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
+        self.modifier(DeviceRotationViewModifier(action: action))
+    }
+}
+
 struct TrendingView: View {
-    @State private var gifs: [Gif] = []
-    @State private var offset = 0
-    
-    //    var body: some View {
-    //        List(gifs, id: \.id) { gif in
-    //            GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
-    //                .frame(width: CGFloat(Int(gif.images.fixed_width.width)!), height: CGFloat(Int(gif.images.fixed_width.height)!))
-    //        }
-    //        .onAppear {
-    //            fetchData()
-    //        }
-    //    }
-    
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @State var gifs: [Gif] = []
+    @State var offset = 0
+    @State private var orientation = UIDeviceOrientation.portrait
+    @State private var columns: [GridItem] = []
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns) {
-                ForEach(gifs.indices, id: \.self) { index in
-                    let gif = gifs[index]
-                    GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
-                        .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 10), height: CGFloat(Int(gif.images.fixed_width.height)!) - 10)
-                        .onAppear {
-                            if index == gifs.count - 1 {
-                                offset += 25
-                                fetchData()
+        NavigationView {
+            ScrollView {
+                Group {
+                    if orientation.isPortrait {
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+                            ForEach(gifs.indices, id: \.self) { index in
+                                let gif = gifs[index]
+                                NavigationLink {
+                                    DetailedGifView(gif: gif)
+                                } label: {
+                                    GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
+                                        .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 10), height: CGFloat(Int(gif.images.fixed_width.height)!) - 10)
+                                        .id(index) // Add id parameter with unique index
+                                        .onAppear {
+                                            if index == gifs.count - 1 {
+                                                offset += 25
+                                                fetchData()
+                                            }
+                                        }
+                                }
                             }
                         }
+                        .padding(.horizontal, 5.0)
+                    } else if orientation.isLandscape {
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
+                            ForEach(gifs.indices, id: \.self) { index in
+                                let gif = gifs[index]
+                                NavigationLink {
+                                    DetailedGifView(gif: gif)
+                                    
+                                } label: {
+                                    GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
+                                        .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 20), height: CGFloat(Int(gif.images.fixed_width.height)!) - 20)
+                                        .id(index) // Add id parameter with unique index
+                                        .onAppear {
+                                            if index == gifs.count - 1 {
+                                                offset += 25
+                                                fetchData()
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 5.0)
+                    }
+                }
+                .onRotate { newOrientation in
+                    orientation = newOrientation
                 }
             }
-            .padding(.horizontal, 5.0)
-        }
-        .onAppear() {
-            fetchData()
+            .onAppear() {
+                fetchData()
+            }
         }
     }
     
     
-    private func fetchData() {
-        let apiKey = "xB9uaMEw3N66ZVGf6UNZlziT2ei7LH1c"
+    func fetchData() {
+        let apiKey = Secrets.apiKey
         let urlString = "https://api.giphy.com/v1/gifs/trending"
         
         guard var urlComponents = URLComponents(string: urlString) else {
@@ -121,7 +165,6 @@ struct Gif: Identifiable, Decodable {
 struct GiphyResponse: Decodable {
     let data: [Gif]
 }
-
 
 
 #Preview {

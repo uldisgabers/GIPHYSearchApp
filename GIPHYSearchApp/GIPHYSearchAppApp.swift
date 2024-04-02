@@ -12,7 +12,6 @@ struct GIPHYSearchAppApp: App {
     var body: some Scene {
         WindowGroup {
             
-//            ContentView()
             TabView {
                 TrendingView()
                     .tabItem {
