@@ -19,7 +19,6 @@ struct DeviceRotationViewModifier: ViewModifier {
     }
 }
 
-// A View wrapper to make the modifier easier to use
 extension View {
     func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
         self.modifier(DeviceRotationViewModifier(action: action))
@@ -41,8 +40,11 @@ struct TrendingView: View {
                             ForEach(gifs.indices, id: \.self) { index in
                                 let gif = gifs[index]
                                 NavigationLink {
+                                    
                                     DetailedGifView(gif: gif)
+                                    
                                 } label: {
+                                    
                                     GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
                                         .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 10), height: CGFloat(Int(gif.images.fixed_width.height)!) - 10)
                                         .id(index) // Add id parameter with unique index
@@ -61,6 +63,7 @@ struct TrendingView: View {
                             ForEach(gifs.indices, id: \.self) { index in
                                 let gif = gifs[index]
                                 NavigationLink {
+                                    
                                     DetailedGifView(gif: gif)
                                     
                                 } label: {
@@ -82,7 +85,6 @@ struct TrendingView: View {
                 .onRotate { newOrientation in
                     orientation = newOrientation
                 }
-                
             }
             .alert(isPresented: $isErrorOccurred) {
                 Alert(

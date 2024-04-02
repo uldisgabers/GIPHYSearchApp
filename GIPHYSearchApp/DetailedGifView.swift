@@ -12,7 +12,7 @@ struct DetailedGifView: View {
     @State private var orientation = UIDeviceOrientation.portrait
     
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
-
+    
     let gif: Gif
     
     var body: some View {
@@ -40,7 +40,6 @@ struct DetailedGifView: View {
                                     Text(gif.title)
                                         .font(.title)
                                 }
-                                
                             }
                         }
                         .onRotate { newOrientation in

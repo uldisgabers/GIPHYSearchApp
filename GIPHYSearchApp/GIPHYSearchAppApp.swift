@@ -11,7 +11,6 @@ import SwiftUI
 struct GIPHYSearchAppApp: App {
     var body: some Scene {
         WindowGroup {
-            
             TabView {
                 TrendingView()
                     .tabItem {

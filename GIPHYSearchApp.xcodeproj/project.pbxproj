@@ -17,7 +17,6 @@
 		5C75CD5C2BBBF5CF009CB9EF /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C75CD5B2BBBF5CF009CB9EF /* Secrets.swift */; };
 		5C75CD5E2BBBF6E4009CB9EF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5C75CD5D2BBBF6E4009CB9EF /* .gitignore */; };
 		5C7A8E4B2BB054B100F5412D /* GIPHYSearchAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7A8E4A2BB054B100F5412D /* GIPHYSearchAppApp.swift */; };
-		5C7A8E4D2BB054B100F5412D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7A8E4C2BB054B100F5412D /* ContentView.swift */; };
 		5C7A8E4F2BB054B300F5412D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C7A8E4E2BB054B300F5412D /* Assets.xcassets */; };
 		5C7A8E522BB054B300F5412D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C7A8E512BB054B300F5412D /* Preview Assets.xcassets */; };
 		5C7A8E5C2BB054B300F5412D /* GIPHYSearchAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7A8E5B2BB054B300F5412D /* GIPHYSearchAppTests.swift */; };
@@ -54,7 +53,6 @@
 		5C75CD5D2BBBF6E4009CB9EF /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		5C7A8E472BB054B100F5412D /* GIPHYSearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GIPHYSearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C7A8E4A2BB054B100F5412D /* GIPHYSearchAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIPHYSearchAppApp.swift; sourceTree = "<group>"; };
-		5C7A8E4C2BB054B100F5412D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5C7A8E4E2BB054B300F5412D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C7A8E512BB054B300F5412D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5C7A8E572BB054B300F5412D /* GIPHYSearchAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GIPHYSearchAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,7 +124,6 @@
 			children = (
 				5C75CD552BBB2E26009CB9EF /* Components */,
 				5C7A8E4A2BB054B100F5412D /* GIPHYSearchAppApp.swift */,
-				5C7A8E4C2BB054B100F5412D /* ContentView.swift */,
 				5C75CD462BB21405009CB9EF /* SearchView.swift */,
 				5C75CD4F2BB59382009CB9EF /* TrendingView.swift */,
 				5C75CD532BB840D4009CB9EF /* DetailedGifView.swift */,
@@ -304,7 +301,6 @@
 				5C75CD522BB60E2E009CB9EF /* DebounceTextField.swift in Sources */,
 				5CF20B0A2BBC579D00A6275C /* GifStructType.swift in Sources */,
 				5C75CD5C2BBBF5CF009CB9EF /* Secrets.swift in Sources */,
-				5C7A8E4D2BB054B100F5412D /* ContentView.swift in Sources */,
 				5C75CD4E2BB37F27009CB9EF /* GIFView.swift in Sources */,
 				5C75CD502BB59382009CB9EF /* TrendingView.swift in Sources */,
 				5C75CD542BB840D4009CB9EF /* DetailedGifView.swift in Sources */,

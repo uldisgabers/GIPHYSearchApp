@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct SearchView: View {
     
     @State private var gifs: [Gif] = []
@@ -44,9 +43,11 @@ struct SearchView: View {
                                     let gif = gifs[index]
                                     
                                     NavigationLink {
+                                        
                                         DetailedGifView(gif: gif)
                                         
                                     } label: {
+                                        
                                         GIFView(type: .url(URL(string: gif.images.fixed_width.url)!))
                                             .frame(width: CGFloat(Int(gif.images.fixed_width.width)! - 10), height: CGFloat(Int(gif.images.fixed_width.height)!) - 10)
                                             .id(index) // Add id parameter with unique index
